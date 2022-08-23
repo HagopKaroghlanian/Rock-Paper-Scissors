@@ -15,3 +15,13 @@ button {
 button:hover {
     cursor: pointer;
 }
+
+.container {
+    margin: 0 auto;
+    background-color: aquamarine;
+    border-radius: 20px;
+    padding: 25px 50px;
+    width: 80vw;
+    text-align: center;
+}
+

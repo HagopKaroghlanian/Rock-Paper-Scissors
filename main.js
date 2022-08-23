@@ -1,83 +1,86 @@
-    const choices = ['rock', 'paper', 'scissors']
-    const winners = [];
+const options = document.querySelectorAll(".options");
+let pScore = 0;
+let cScore = 0;
 
-    function game() {
-        // Play the game
-        // Play five rounds
-        // console based
-        for (let i = 1; i <= 5; i++) {
-            playRound(i);
+//add DOM event listeners
+options.forEach((option) => {
+    option.addEventListener('click', function() {
+        const pInput = this.textContent;
+
+        const cOptions = ["rock", "paper", "scissors"];
+        const cInput = cOptions[Math.floor(Math.random() * 3)];
+
+        compareInputs(pInput,cInput);
+        updateScore();
+        if (checkWinner()) {
+            pScore = cScore = 0;
+            updateScore();
         }
-        document.querySelector("button").textContent = "Play Again.";
-        logWins();
+    });
+});
+
+// Update the Score on the page
+function updateScore() {
+    document.getElementById("p-score").textContent = pScore;
+    document.getElementById("c-score").textContent = cScore;
+}
+
+
+// Check the winner
+function checkWinner(){
+    if (pScore === 5 || cScore === 5) {
+        const winner =
+        pScore === 5
+        ? "You win the game! Congratulations!"
+        : "Computer wins the game! Try again.";
+
+        alert(winner);
+        return true;
+    }
+    return false;
+}
+
+
+//Compare the inputs
+function compareInputs(pInput, cInput) {
+    const currentMatch = `${pInput} vs ${cInput}`;
+
+    // Tie Check
+    if (pInput === cInput) {
+        alert(`${currentMatch} is a Tie.`);
+        return;
     }
 
-    function playRound(round) {
-        const playerSelection = playerChoice();
-        const computerSelection = computerChoice();
-        const winner = checkWinner(playerSelection, computerSelection);
-        // console.log(winner);
-        winners.push(winner);
-        logRound(playerSelection,computerSelection,winner,round)
-
-    }
-
-    function playerChoice() {
-        //Get input from player
-        let input = prompt('Type Rock, Paper or Scissors');
-        while (input == null) {
-            input = prompt('Type Rock, Paper or Scissors');
-        }
-        input = input.toLowerCase();
-        let check = validateInput(input);
-        while (check == false) {
-            input = prompt('Please type Rock, Paper, or Scissors. Spelling needs to be exact!');
-            input = input.toLowerCase();
-            check = validateInput(input);
-        }
-        return input;
-    }
-
-    function computerChoice() {
-        //Get random input for computer
-        return choices[Math.floor(Math.random() * choices.length)];
-    }
-
-    function validateInput(choice) {
-        return choices.includes(choice);
-    }
-
-    function checkWinner(choiceP, choiceC) {
-        if (choiceP === choiceC) {
-            return "Tie";
-        } else if (
-            (choiceP === "rock" && choiceC === "scissors") || 
-            (choiceP === "paper" && choiceC === "rock") || 
-            (choiceP === "scissors" && choiceC === "paper")
-        ) {
-            return "Player";
+    //Rock
+    if (pInput === 'rock') {
+        if (cInput === 'scissors') {
+            alert(`${currentMatch} = You Win`);
+            pScore++;
         } else {
-            return "Computer";
+            alert(`${currentMatch} = Computer Wins`);
+            cScore++;
         }
     }
 
-    function logWins() {
-        let playerWins = winners.filter(item => item == "Player").length;
-        let computerWins = winners.filter(item => item == "Computer").length;
-        let ties = winners.filter(item => item == "Tie").length;
-        console.log('Results:');
-        console.log('playerwins:', playerWins);
-        console.log('computerwins:',computerWins);
-        console.log('ties:',ties);
-
-
+    //Paper
+    else if (pInput === 'paper') {
+        if (cInput === 'rock') {
+            alert(`${currentMatch} = You Win`);
+            pScore++;
+        } else {
+            alert(`${currentMatch} = Computer Wins`);
+            cScore++;
+        }
     }
 
-
-    function logRound(playerChoice,computerChoice,winner,round) {
-        console.log('Round:', round);
-        console.log('Player Chose',playerChoice);
-        console.log('Computer Chose',computerChoice);
-        console.log(winner, 'Won the Round');
-        console.log("------------");
+    //Scissors
+    else {
+        if (cInput === 'paper') {
+            alert(`${currentMatch} = You Win`);
+            pScore++;
+        } else {
+            alert(`${currentMatch} = Computer Wins`);
+            cScore++;
+        }
     }
+}
